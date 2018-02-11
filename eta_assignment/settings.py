@@ -55,21 +55,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'eta_assignment.urls'
 
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': [],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#             ],
-#         },
-#     },
-# ]
 
 TEMPLATES = [
     {
@@ -108,11 +93,6 @@ WSGI_APPLICATION = 'eta_assignment.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'ENGINE':'django.contrib.gis.db.backends.spatialite',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-
-        # 'ENGINE': 'django.db.backends.postgresql',
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'sample3',
         'USER': 'lakshay',
@@ -122,8 +102,6 @@ DATABASES = {
 
     }
 }
-
-
 
 
 # Password validation
