@@ -18,38 +18,41 @@
         <div class="col-md-1">
         </div>
             <div class="col-md-3">
-                <div class="dropdown">
+                <div class="dropdown" >
                     <select id="id_country" class="form-control" name="countries" onchange="load_states();">
                       <option value="">Select Country</option>
                       {% for country in countries %}
                       <option value="{{country.id}}">{{country.name}}</option>
                       {% endfor %}
                     </select>
+                    <small class="center red" id="id_country_error"></small>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="dropdown">
                     <select class="form-control" id="id_states" name="states" onchange="load_cities();" >
                         <option value="">Select State</option>
-                        <option value="">Plz Select Country</option>
+                        <option class="red" value="">Please Select Country</option>
                     </select>
+                    <small class="center red" id="id_state_error"></small>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="dropdown">
                     <select class="form-control" id="id_cities" name="cities">
                       <option value="">Select City</option>
-                      <option value="">Plz Select State</option>
+                      <option class="red" value="">Please Select State</option>
                     </select>
+                    <small class="center red" id="id_city_error"></small>
                 </div>
             </div>
             <div class="col-md-2">
-                <input onclick="submit_form()" class="btn btn-success" value="Submit">
+                <a onclick="submit_form()" class="btn btn-success" value="Submit">Submit</a>
             </div>
         </div>
 
-        <div class="towards_bottom">
-            <h4 id="id_data"></h4>
+        <div class="more_towards_bottom">
+            <h4 class="center" id="id_data"></h4>
         </div>
     </form>
 </div>
@@ -63,7 +66,7 @@
 
 function load_states(){
     country_id = $("#id_country").val();
-    if(country_id != null ){
+    if(country_id != "" ){
         data = {
             "action":"for_states",
             "country_id":country_id,
@@ -74,9 +77,6 @@ function load_states(){
             data: data,
             success: function(response) {
                 $("#id_states").html(response.data);
-                // var city = getParamValue('city');
-                // if (city){
-                //    $("select[name='city']").val(city);
                }
         })
     }
@@ -100,13 +100,9 @@ function load_cities(){
             data: data,
             success: function(response) {
                 $("#id_cities").html(response.data);
-                // var city = getParamValue('city');
-                // if (city){
-                //    $("select[name='city']").val(city);
                }
         })
     }
-
 }
 
 </script>
@@ -118,7 +114,6 @@ function submit_form(){
     state = $("#id_states").val();
     city = $("#id_cities").val();
     var formdata = $("#submit_form").serialize();
-    alert(formdata);
     if(country != "" & state !="" & city!=""){
         data = {
             "action":"form_submit",
@@ -132,13 +127,39 @@ function submit_form(){
             type: "GET",
             data: data,
             success: function(data){
-                    $("#id_data").html("So your Country is <strong>"+ data.country_name +"</strong>, state is <strong>"+
-                                        data.state_name + "</strong>, and city is <strong>" + data.city_name + "</strong>"  )
+                    $("#id_data").html("Your Country is <strong>"+ data.country_name +"</strong>, State is <strong>"+
+                                        data.state_name + "</strong>, and City is <strong>" + data.city_name + "</strong>" )
             },
         })
-
+    }else{
+        if(country == ""){
+            $("#id_country_error").html("*This Fied is required");
+        }
+        if(state == ""){
+            $("#id_state_error").html("*This Fied is required");
+        }
+        if(city == ""){
+            $("#id_city_error").html("*This Fied is required");
+        }
     }
+
 }
+
+</script>
+
+<script>
+
+$( "#id_country" ).click(function() {
+    $("#id_country_error").html("")
+});
+
+$( "#id_cities" ).click(function() {
+    $("#id_city_error").html("")
+});
+
+$( "#id_states" ).click(function() {
+    $("#id_state_error").html("")
+});
 
 </script>
 

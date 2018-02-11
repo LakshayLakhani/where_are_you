@@ -58,10 +58,6 @@ def where_are_you(request):
         }
         return JsonResponse(data)
 
-        # return HttpResponse(json.dumps(response), content_type="application/json")
-    # if request.is_ajax() and request.GET['action']=="for_cities":
-
-
     context.update({
         "countries":countries,
     })
