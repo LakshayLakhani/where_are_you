@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.http import HttpResponse
+from django.http import JsonResponse
 
 import cities
 
@@ -40,6 +41,24 @@ def where_are_you(request):
             response = {"data": template}
             return HttpResponse(json.dumps(response), content_type="application/json")
 
+    if request.is_ajax() and request.GET['action']=="form_submit":
+        form_data = request.GET["form_data"]
+        country_id = request.GET["country"]
+        state_id = request.GET["state"]
+        city_id =  request.GET["city"]
+
+        city = cities.models.City.objects.filter(id=city_id).first()
+        country = cities.models.Country.objects.filter(id=country_id).first()
+        state = cities.models.Region.objects.filter(id=state_id).first()
+
+        data={
+            "city_name":city.name,
+            "country_name":country.name,
+            "state_name":state.name
+        }
+        return JsonResponse(data)
+
+        # return HttpResponse(json.dumps(response), content_type="application/json")
     # if request.is_ajax() and request.GET['action']=="for_cities":
 
 

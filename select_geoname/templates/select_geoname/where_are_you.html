@@ -13,7 +13,7 @@
 
 <div class="container">
     <h1 style="text-align:center;" class="towards_bottom" >Where Are You</h1>
-    <form action="" method="GET" id="submit-form">
+    <form action="" method="GET" id="submit_form">
     <div class="row towards_bottom">
         <div class="col-md-1">
         </div>
@@ -46,6 +46,10 @@
             <div class="col-md-2">
                 <input onclick="submit_form()" class="btn btn-success" value="Submit">
             </div>
+        </div>
+
+        <div class="towards_bottom">
+            <h4 id="id_data"></h4>
         </div>
     </form>
 </div>
@@ -113,9 +117,12 @@ function submit_form(){
     country = $("#id_country").val();
     state = $("#id_states").val();
     city = $("#id_cities").val();
+    var formdata = $("#submit_form").serialize();
+    alert(formdata);
     if(country != "" & state !="" & city!=""){
         data = {
-            "action":"for_cities",
+            "action":"form_submit",
+            "form_data":formdata,
             "country":country,
             "state":state,
             "city":city
@@ -124,9 +131,10 @@ function submit_form(){
             url: "{% url 'where_are_you' %}",
             type: "GET",
             data: data,
-            success: function(response) {
-                $("#id_cities").html(response.data);
-               }
+            success: function(data){
+                    $("#id_data").html("So your Country is <strong>"+ data.country_name +"</strong>, state is <strong>"+
+                                        data.state_name + "</strong>, and city is <strong>" + data.city_name + "</strong>"  )
+            },
         })
 
     }
