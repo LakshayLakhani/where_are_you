@@ -1,0 +1,72 @@
+{% extends "select_geoname/__base.html" %}
+{% load staticfiles %}
+{% block title %}Search{% endblock title %}
+
+{% block stylesheets %}
+
+<link rel="stylesheet" href="{% static 'css/bootstrap-multiselect.css' %}"></link>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css" type="text/css">
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4 towards_bottom">
+            <h1>Where Are You</h1>
+        </div>
+    </div>
+
+    <div class="row towards_bottom">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-3">
+            <div class="dropdown">
+                <select class="form-control" name="cars" >
+                  <option value="">Select Country</option>
+                  {% for country in countries %}
+                  <option value="{{country}}">{{country.name}}</option>
+                  {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dropdown">
+                <select class="form-control" name="cars" >
+                    <option value="">Select State</option>
+                    {% for reg in region %}
+                    <option value="{{reg}}">{{reg.name_std}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dropdown">
+                <select class="form-control" name="cars" >
+                  <option value="">Select City</option>
+                  {% for city in citys %}
+                    <option value="{{country}}">{{city.name}}</option>
+                  {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block js %}
+
+<script>
+
+
+</script>
+
+
+<script type="text/javascript" src="{% static 'javascript/validate.min.js' %}"></script>
+
+{% endblock js %}
