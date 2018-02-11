@@ -12,48 +12,42 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-4 towards_bottom">
-            <h1>Where Are You</h1>
-        </div>
-    </div>
-
+    <h1 style="text-align:center;" class="towards_bottom" >Where Are You</h1>
+    <form action="" method="GET" id="submit-form">
     <div class="row towards_bottom">
         <div class="col-md-1">
         </div>
-        <div class="col-md-3">
-            <div class="dropdown">
-                <select id="id_country" class="form-control" name="countries" onchange="load_states();">
-                  <option value="">Select Country</option>
-                  {% for country in countries %}
-                  <option value="{{country.id}}">{{country.name}}</option>
-                  {% endfor %}
-                </select>
+            <div class="col-md-3">
+                <div class="dropdown">
+                    <select id="id_country" class="form-control" name="countries" onchange="load_states();">
+                      <option value="">Select Country</option>
+                      {% for country in countries %}
+                      <option value="{{country.id}}">{{country.name}}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dropdown">
+                    <select class="form-control" id="id_states" name="states" onchange="load_cities();" >
+                        <option value="">Select State</option>
+                        <option value="">Plz Select Country</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dropdown">
+                    <select class="form-control" id="id_cities" name="cities">
+                      <option value="">Select City</option>
+                      <option value="">Plz Select State</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <input onclick="submit_form()" class="btn btn-success" value="Submit">
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="dropdown">
-                <select class="form-control" id="id_states" name="states" onchange="load_cities();" >
-                    <option value="">Select State</option>
-                    {% for reg in region %}
-                    <option value="{{reg.name_std}}">{{reg.name_std}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="dropdown">
-                <select class="form-control" id="id_cities" name="cities">
-                  <option value="">Select City</option>
-                  {% for city in citys %}
-                    <option value="{{city.name}}">{{city.name}}</option>
-                  {% endfor %}
-                </select>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
 
 {% endblock content %}
@@ -65,22 +59,23 @@
 
 function load_states(){
     country_id = $("#id_country").val();
-    data = {
-        "action":"for_states",
-        "country_id":country_id,
+    if(country_id != null ){
+        data = {
+            "action":"for_states",
+            "country_id":country_id,
+        }
+        $.ajax({
+            url: "{% url 'where_are_you' %}",
+            type: "GET",
+            data: data,
+            success: function(response) {
+                $("#id_states").html(response.data);
+                // var city = getParamValue('city');
+                // if (city){
+                //    $("select[name='city']").val(city);
+               }
+        })
     }
-    $.ajax({
-        url: "{% url 'where_are_you' %}",
-        type: "GET",
-        data: data,
-        success: function(response) {
-            $("#id_states").html(response.data);
-            // var city = getParamValue('city');
-            // if (city){
-            //    $("select[name='city']").val(city);
-           }
-    })
-
 }
 
 </script>
@@ -88,24 +83,53 @@ function load_states(){
 <script>
 
 function load_cities(){
-    state_id = $("#id_states").val();
-    alert(state_id);
-    data = {
-        "action":"for_cities",
-        "state_id":state_id,
+    country_id = $("#id_country").val();
+    if(country_id != "" ){
+        state_id = $("#id_states").val();
+        data = {
+            "action":"for_cities",
+            "state_id":state_id,
+        }
+        $.ajax({
+            url: "{% url 'where_are_you' %}",
+            type: "GET",
+            data: data,
+            success: function(response) {
+                $("#id_cities").html(response.data);
+                // var city = getParamValue('city');
+                // if (city){
+                //    $("select[name='city']").val(city);
+               }
+        })
     }
-    $.ajax({
-        url: "{% url 'where_are_you' %}",
-        type: "GET",
-        data: data,
-        success: function(response) {
-            $("#id_cities").html(response.data);
-            // var city = getParamValue('city');
-            // if (city){
-            //    $("select[name='city']").val(city);
-           }
-    })
 
+}
+
+</script>
+
+<script>
+
+function submit_form(){
+    country = $("#id_country").val();
+    state = $("#id_states").val();
+    city = $("#id_cities").val();
+    if(country != "" & state !="" & city!=""){
+        data = {
+            "action":"for_cities",
+            "country":country,
+            "state":state,
+            "city":city
+        }
+        $.ajax({
+            url: "{% url 'where_are_you' %}",
+            type: "GET",
+            data: data,
+            success: function(response) {
+                $("#id_cities").html(response.data);
+               }
+        })
+
+    }
 }
 
 </script>

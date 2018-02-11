@@ -13,7 +13,7 @@ import cities
 def where_are_you(request):
     context = {}
     countries = cities.models.Country.objects.all()
-    
+
     response = {"status": False, "errors": []}
 
     if request.is_ajax() and request.GET['action']=="for_states":
@@ -40,10 +40,11 @@ def where_are_you(request):
             response = {"data": template}
             return HttpResponse(json.dumps(response), content_type="application/json")
 
+    # if request.is_ajax() and request.GET['action']=="for_cities":
+
+
     context.update({
         "countries":countries,
-        # "region":region,
-        # "citys":citys
     })
 
     return render(request, "select_geoname/where_are_you.html", context)
