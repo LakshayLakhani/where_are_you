@@ -25,30 +25,30 @@
         </div>
         <div class="col-md-3">
             <div class="dropdown">
-                <select class="form-control" name="cars" >
+                <select id="id_country" class="form-control" name="countries" onchange="load_states();">
                   <option value="">Select Country</option>
                   {% for country in countries %}
-                  <option value="{{country}}">{{country.name}}</option>
+                  <option value="{{country.id}}">{{country.name}}</option>
                   {% endfor %}
                 </select>
             </div>
         </div>
         <div class="col-md-3">
             <div class="dropdown">
-                <select class="form-control" name="cars" >
+                <select class="form-control" id="id_states" name="states" onchange="load_cities();" >
                     <option value="">Select State</option>
                     {% for reg in region %}
-                    <option value="{{reg}}">{{reg.name_std}}</option>
+                    <option value="{{reg.name_std}}">{{reg.name_std}}</option>
                     {% endfor %}
                 </select>
             </div>
         </div>
         <div class="col-md-3">
             <div class="dropdown">
-                <select class="form-control" name="cars" >
+                <select class="form-control" id="id_cities" name="cities">
                   <option value="">Select City</option>
                   {% for city in citys %}
-                    <option value="{{country}}">{{city.name}}</option>
+                    <option value="{{city.name}}">{{city.name}}</option>
                   {% endfor %}
                 </select>
             </div>
@@ -63,6 +63,50 @@
 
 <script>
 
+function load_states(){
+    country_id = $("#id_country").val();
+    data = {
+        "action":"for_states",
+        "country_id":country_id,
+    }
+    $.ajax({
+        url: "{% url 'where_are_you' %}",
+        type: "GET",
+        data: data,
+        success: function(response) {
+            $("#id_states").html(response.data);
+            // var city = getParamValue('city');
+            // if (city){
+            //    $("select[name='city']").val(city);
+           }
+    })
+
+}
+
+</script>
+
+<script>
+
+function load_cities(){
+    state_id = $("#id_states").val();
+    alert(state_id);
+    data = {
+        "action":"for_cities",
+        "state_id":state_id,
+    }
+    $.ajax({
+        url: "{% url 'where_are_you' %}",
+        type: "GET",
+        data: data,
+        success: function(response) {
+            $("#id_cities").html(response.data);
+            // var city = getParamValue('city');
+            // if (city){
+            //    $("select[name='city']").val(city);
+           }
+    })
+
+}
 
 </script>
 

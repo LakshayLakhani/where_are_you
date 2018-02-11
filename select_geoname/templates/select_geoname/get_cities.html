@@ -1,0 +1,5 @@
+{% load staticfiles %}
+<option selected="selected" value="">Select Citiy</option>
+{% for city in cities %}
+    <option value = "{{ city.id }}">{{ city.name }}</option>
+{% endfor %}
